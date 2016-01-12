@@ -33,7 +33,7 @@ app.get('/help', function (req, res) {
 app.use(function(req, res, next) {
     const location = History.createLocation(req.path);
     
-    match({ routes, location }, (error, redirectLocation, renderProps: any) => {
+    match({ routes, location }, (error: Error, redirectLocation: any, renderProps: any) => {
         var html = ReactDOMServer.renderToString(<RoutingContext {...renderProps} />)
         return res.render('main', { content: html, title: 'Home', min: min });
     });

@@ -7,9 +7,14 @@
     "name": "Todd Lucas",
     "email": "hi@toddlucas.net"
   },
+  "scripts": {
+    "start": "node www/server"
+  },
   "browserify-shim": {},
   "dependencies": {
     "express": "^4.13.3",
+    "gulp-shell": "^0.5.1",
+    "gulp-sourcemaps": "^1.6.0",
     "history": "^1.13.1",
     "react": "^0.14.5",
     "react-dom": "^0.14.5",

@@ -18,7 +18,9 @@ var gulp = require("gulp"),
     runSequence = require('run-sequence'),
     buffer = require('vinyl-buffer'),
     source = require('vinyl-source-stream'),
-    transform = require('vinyl-transform');
+    transform = require('vinyl-transform'),
+    shell = require('gulp-shell'),
+    sourcemaps = require('gulp-sourcemaps');
 
 //
 // Configuration
@@ -136,25 +138,7 @@ gulp.task('less', function () {
         .pipe(gulp.dest(build.output.dirs.styles));
 });
 
-gulp.task('typescript', function () {
-    var tsResult = gulp
-        .src(build.input.files.ts)
-        .pipe(typescript({
-            noImplicitAny: false,
-            noEmitOnError: true,
-            declarationFiles: true,
-            noExternalResolve: false,
-            removeComments: false,
-            module: "commonjs",
-            diagnostics: true,
-            sourceMap: true,
-            target: "ES5",
-            jsx: "react"
-        }));
-        
-    return tsResult.js
-        .pipe(gulp.dest(build.output.dirs.ts));
-});
+gulp.task('typescript', shell.task(["tsc"]));
 
 gulp.task('vendor', function() {
     return browserify({
@@ -223,6 +207,10 @@ gulp.task('copy', ['scripts', 'styles', /* 'extern', 'polyfills', */ 'images', '
 
 gulp.task('compile', function(callback) {
     runSequence(['typescript', 'less'], ['vendor', 'app'], callback);
+});
+
+gulp.task('build', ["compile"], function(callback) {
+    callback();
 });
 
 gulp.task('recompile', function(callback) {
